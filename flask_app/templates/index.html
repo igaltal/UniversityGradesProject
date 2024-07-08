@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grades</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Grades</h1>
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Grade</th>
+                <th>Points</th>
+            </tr>
+            {% for grade in grades %}
+            <tr>
+                <td>{{ grade[0] }}</td>
+                <td>{{ grade[1] }}</td>
+                <td>{{ grade[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>Average Grade: <span id="average">{{ average }}</span></h2>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
