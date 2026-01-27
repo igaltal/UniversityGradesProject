@@ -25,16 +25,9 @@ cursor.execute('''
 cursor.execute('SELECT COUNT(*) FROM grades')
 if cursor.fetchone()[0] == 0:
     courses = [
-        ("Logic and Set Theory", None, 5),
-        ("Operating Systems", None, 4),
-        ("Advanced English", None, 0),
-        ("Product Design", None, 3),
-        ("Product Management", None, 3),
-        ("Computational Learning", None, 4),
-        ("Computational Models", None, 4),
-        ("Intro to Statistics", None, 4),
-        ("Accounting for Entrepreneurs", None, 1),
-        ("Venture Capital", None, 3),
+        ("3937 Practical Entrepreneurship Seminar - Acceleration", None, 3),
+        ("5090 AI Tools for Entrepreneurs", None, 3),
+        ("5789 Decision Making in Entrepreneurship", None, 3),
     ]
     cursor.executemany('INSERT INTO grades (course, grade, points) VALUES (?, ?, ?)', courses)
 

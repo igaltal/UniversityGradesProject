@@ -104,14 +104,23 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# dotenv
+# dotenv - CRITICAL: Never commit .env files with secrets!
 .env
+.env.*
+!.env.example
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Sensitive data - Additional security layer
+**/config_local.py
+**/secrets.json
+*.pem
+*.key
+*.crt
 
 # Spyder project settings
 .spyderproject
