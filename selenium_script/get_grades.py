@@ -69,27 +69,44 @@ def send_telegram_message(message):
 def extract_and_print_grades(driver):
     """Extract grades from page and update database"""
     grades_found = []
+    seen_courses = {}  
     
     try:
         # Find all course cards
         course_cards = driver.find_elements(By.CLASS_NAME, "Box_ph")
         logger.info(f"Found {len(course_cards)} course cards")
         
-        for card in course_cards:
+        for card_index, card in enumerate(course_cards):
             try:
                 # Extract course name from h2
                 course_name_elem = card.find_element(By.TAG_NAME, "h2")
                 course_name = course_name_elem.text.strip()
                 
+                # Skip empty cards
+                if not course_name:
+                    logger.debug(f"Skipping empty card {card_index}")
+                    continue
+                
                 # Extract grade from strong tag
                 grade_elem = card.find_element(By.TAG_NAME, "strong")
                 grade_text = grade_elem.text.strip()
                 
-                logger.info(f"{course_name}: {grade_text}")
+                logger.info(f"Card {card_index}: {course_name}: {grade_text}")
                 
                 # Parse grade value (check for Hebrew "Grade:" prefix)
                 if "ציון:" in grade_text or "Grade:" in grade_text:
                     grade_value = grade_text.replace("ציון:", "").replace("Grade:", "").strip()
+                    
+                    # Get course code for deduplication (first word)
+                    course_code = course_name.split()[0] if course_name.split() else course_name
+                    
+                    # Check if we've already seen this course
+                    if course_code in seen_courses:
+                        logger.info(f"Skipping duplicate course: {course_code}")
+                        continue
+                    
+                    # Mark course as seen
+                    seen_courses[course_code] = True
                     
                     # Check if grade is not yet available (Hebrew "not yet")
                     if grade_value != "טרם" and grade_value.lower() != "not yet":
@@ -97,21 +114,20 @@ def extract_and_print_grades(driver):
                         update_grade(course_name, grade_value)
                         
                         # Send notification
-                        course_key = course_name.split()[0]  # Use course code as key
-                        if course_key not in course_message_flags:
-                            course_message_flags[course_key] = False
+                        if course_code not in course_message_flags:
+                            course_message_flags[course_code] = False
                         
-                        if not course_message_flags[course_key]:
+                        if not course_message_flags[course_code]:
                             message = f"New grade for {course_name}: {grade_value}"
                             if send_telegram_message(message):
-                                course_message_flags[course_key] = True
+                                course_message_flags[course_code] = True
                         
                         grades_found.append((course_name, grade_value))
                     else:
                         grades_found.append((course_name, "Not available"))
                         
             except Exception as e:
-                logger.warning(f"Could not extract grade from card: {e}")
+                logger.warning(f"Could not extract grade from card {card_index}: {e}")
                 continue
                 
     except Exception as e:
