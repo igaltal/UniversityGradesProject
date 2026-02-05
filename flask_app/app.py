@@ -1,4 +1,3 @@
-#/Users/igaltal/Desktop/UniversityGradesProject/flask_app/app.py
 from flask import Flask, render_template
 import sqlite3
 

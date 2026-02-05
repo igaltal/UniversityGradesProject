@@ -432,7 +432,7 @@ if __name__ == "__main__":
         Config.validate()
         logger.info("Configuration validated successfully")
         
-        selenium_thread = threading.Thread(target=run_selenium, daemon=True)
+        selenium_thread = threading.Thread(target=run_1selenium, daemon=True)
         bot_thread = threading.Thread(target=start_bot, daemon=True)
 
         selenium_thread.start()

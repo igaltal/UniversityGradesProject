@@ -1,4 +1,3 @@
-#/Users/igaltal/Desktop/UniversityGradesProject/flask_app/create_db.py
 import sqlite3
 import os
 

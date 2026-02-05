@@ -91,5 +91,5 @@ class Config:
 try:
     Config.validate()
 except ValueError as e:
-    print(f"⚠️  Configuration Error: {e}")
+    print(f"Configuration Error: {e}")
     print("Please create a .env file with your credentials based on .env.example")
