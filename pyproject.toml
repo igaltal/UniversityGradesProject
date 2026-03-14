@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "university-grades"
+version = "1.0.0"
+description = "Automated grade monitoring for Reichman University"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "selenium>=4.15",
+    "pyTelegramBotAPI>=4.14",
+    "python-dotenv>=1.0",
+    "Flask>=3.0",
+    "Werkzeug>=3.0",
+    "pytest>=8.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[project.scripts]
+grade-tracker = "university_grades.cli:run_web"
+grade-scraper = "university_grades.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
